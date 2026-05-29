@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: #0b0b0f;
+  color: white;
+}
+
+.app {
+  max-width: 430px;
+  margin: auto;
+  padding: 16px;
+}
+
+/* 📦 CARD STYLE */
+.card {
+  background: #15151c;
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* 🟦 RESULT CARD */
+.result {
+  border: 1px solid #2d6cdf;
+}
+
+.title {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
+
+/* INPUTS */
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+
+  border-radius: 10px;
+  border: none;
+
+  background: #22222a;
+  color: white;
+  font-size: 16px;
+}
+
+/* BUTTON (APP PRIMARY ACTION) */
+button {
+  width: 100%;
+  padding: 14px;
+
+  border-radius: 14px;
+  border: none;
+
+  background: #2d6cdf;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+button:active {
+  transform: scale(0.98);
+}
