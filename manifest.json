@@ -1,9 +1,0 @@
-{
-  "name": "V8 Risk Engine",
-  "short_name": "RiskApp",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#f2f2f7",
-  "theme_color": "#007aff"
-}
-``
