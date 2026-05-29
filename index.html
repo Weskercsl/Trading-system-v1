@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>V8 Trading Engine</title>
+
+<!-- ✅ CSS external -->
+<link rel="stylesheet" href="style.css?v=3">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- RESULT -->
+<div class="card">
+  <div class="label">TRADE DECISION</div>
+  <div id="decision" class="value">--</div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <div class="label">POSITION</div>
+    <div id="position" class="value">--</div>
+  </div>
+
+  <div class="card">
+    <div class="label">SHARES</div>
+    <div id="shares" class="value">--</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <div class="label">MAX LOSS</div>
+    <div id="loss" class="value">--</div>
+  </div>
+
+  <div class="card">
+    <div class="label">PROFIT</div>
+    <div id="profit" class="value">--</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="label">R:R</div>
+  <div id="rr" class="value">--</div>
+</div>
+
+<!-- INPUTS -->
+<div class="card">
+  <div class="label">CAPITAL</div>
+  <input type="number" id="capital" placeholder="10000">
+</div>
+
+<div class="card">
+  <div class="label">RISK %</div>
+  <input type="number" id="riskpct" placeholder="1">
+</div>
+
+<div class="card">
+  <div class="label">ENTRY</div>
+  <input type="number" id="entry">
+</div>
+
+<div class="card">
+  <div class="label">STOP</div>
+  <input type="number" id="stop">
+</div>
+
+<div class="card">
+  <div class="label">TAKE PROFIT</div>
+  <input type="number" id="tp">
+</div>
+
+<div class="card">
+  <div class="label">RSI</div>
+  <input type="number" id="rsi">
+</div>
+
+<div class="card">
+  <div class="label">MFI</div>
+  <input type="number" id="mfi">
+</div>
+
+<div class="card">
+  <div class="label">TREND</div>
+  <select id="ma">
+    <option value="up">Uptrend</option>
+    <option value="flat">Flat</option>
+    <option value="down">Downtrend</option>
+  </select>
+</div>
+
+<div class="card">
+  <div class="label">OBV</div>
+  <select id="obv">
+    <option value="up">Bullish</option>
+    <option value="flat">Neutral</option>
+    <option value="down">Bearish</option>
+  </select>
+</div>
+
+<div class="card">
+  <div class="label">REGIME</div>
+  <select id="regime">
+    <option value="trend">Trend</option>
+    <option value="range">Range</option>
+    <option value="uncertain">Uncertain</option>
+  </select>
+</div>
+
+<button onclick="calc()">CALCULATE</button>
+
+</div>
+
+<script>
+function calc(){
+
+  let capital = +capital.value;
+  let riskpct = +riskpct.value;
+
+  let entry = +entry.value;
+  let stop = +stop.value;
+  let tp = +tp.value;
+
+  let rsi = +rsi.value || 50;
+  let mfi = +mfi.value || 50;
+
+  let ma = ma.value;
+  let obv = obv.value;
+  let regime = regime.value;
+
+  // Q SCORE
+  let Q = 50;
+
+  if(regime === "trend"){
+    if(ma === "up") Q += 20;
+    if(obv === "up") Q += 15;
+    if(rsi > 45 && rsi < 70) Q += 10;
+  }
+
+  if(regime === "range"){
+    if(rsi < 70 && rsi > 40) Q += 15;
+  }
+
+  if(regime === "uncertain") Q -= 20;
+
+  Q = Math.max(0, Math.min(100, Q));
+
+  // RISK
+  let R = Math.abs(entry - stop);
+  let rr = (tp - entry) / (entry - stop);
+
+  let riskMoney = capital * (riskpct / 100);
+  let adjustedRisk = riskMoney * (Q / 100);
+
+  let shares = R ? adjustedRisk / R : 0;
+
+  let position = shares * entry;
+  let loss = shares * R;
+  let profit = shares * (tp - entry);
+
+  let decision = "AVOID";
+  if(Q > 75) decision = "STRONG";
+  else if(Q > 60) decision = "TRADE";
+
+  decisionEl.innerText = decision;
+  positionEl.innerText = "$" + position.toFixed(0);
+  sharesEl.innerText = shares.toFixed(2);
+  lossEl.innerText = "-$" + loss.toFixed(0);
+  profitEl.innerText = "+$" + profit.toFixed(0);
+  rrEl.innerText = rr.toFixed(2);
+}
+</script>
+
+</body>
+</html>
