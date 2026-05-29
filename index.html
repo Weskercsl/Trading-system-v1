@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Trading System FINAL</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Trading System FINAL</h2>
+
+<label>RSI</label>
+<input id="rsi" placeholder="0-100">
+
+<label>MFI</label>
+<input id="mfi" placeholder="0-100">
+
+<label>MA Slope</label>
+<select id="maSlope">
+  <option value="up">up</option>
+  <option value="flat">flat</option>
+  <option value="down">down</option>
+</select>
+
+<label>OBV Slope</label>
+<select id="obvSlope">
+  <option value="up">up</option>
+  <option value="flat">flat</option>
+  <option value="down">down</option>
+</select>
+
+<label>Account Size</label>
+<input id="account" placeholder="e.g. 10000">
+
+<button onclick="run()">Evaluate Trade</button>
+
+<pre id="output"></pre>
+
+<script src="app.js"></script>
+
+</body>
+</html>
