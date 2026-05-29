@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- 🟦 TOP STATUS CARD -->
+  <div class="card result">
+    <div class="title">STATUS</div>
+    <pre id="output">Ready</pre>
+  </div>
+
+  <!-- 🟩 INPUT CARD -->
+  <div class="card">
+
+    <input id="rsi" type="number" placeholder="RSI">
+    <input id="mfi" type="number" placeholder="MFI">
+
+    <select id="maSlope">
+      <option value="up">MA ↑</option>
+      <option value="flat">MA →</option>
+      <option value="down">MA ↓</option>
+    </select>
+
+    <select id="obvSlope">
+      <option value="up">OBV ↑</option>
+      <option value="flat">OBV →</option>
+      <option value="down">OBV ↓</option>
+    </select>
+
+    <input id="account" type="number" placeholder="Account">
+
+  </div>
+
+  <!-- 🟨 ACTION -->
+  <button onclick="run()">Evaluate Trade</button>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
