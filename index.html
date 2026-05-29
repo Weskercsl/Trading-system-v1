@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- 📱 iPhone / mobile 关键适配 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Trading System</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Trading System</h2>
+
+  <label>RSI</label>
+  <input id="rsi" type="number" placeholder="0 - 100">
+
+  <label>MFI</label>
+  <input id="mfi" type="number" placeholder="0 - 100">
+
+  <label>MA Slope</label>
+  <select id="maSlope">
+    <option value="up">up</option>
+    <option value="flat">flat</option>
+    <option value="down">down</option>
+  </select>
+
+  <label>OBV Slope</label>
+  <select id="obvSlope">
+    <option value="up">up</option>
+    <option value="flat">flat</option>
+    <option value="down">down</option>
+  </select>
+
+  <label>Account Size</label>
+  <input id="account" type="number" placeholder="e.g. 10000">
+
+  <button onclick="run()">Evaluate Trade</button>
+
+  <pre id="output"></pre>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
