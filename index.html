@@ -179,12 +179,20 @@ function calc(){
 
 const $ = id => document.getElementById(id);
 
-/* inputs */
-let capital = parseFloat($("capital").value || 0);
-let entry = parseFloat($("entry").value || 0);
-let stop = parseFloat($("stop").value || 0);
-let target = parseFloat($("target").value || 0);
-let rsi = parseFloat($("rsi").value || 50);
+/* FORCE UI CLEAR (important fix) */
+$("decision").innerText = "--";
+$("edge").innerText = "--";
+$("kelly").innerText = "--";
+$("pos").innerText = "--";
+$("loss").innerText = "--";
+$("profit").innerText = "--";
+
+/* INPUTS (always fresh read) */
+let capital = Number($("capital").value);
+let entry = Number($("entry").value);
+let stop = Number($("stop").value);
+let target = Number($("target").value);
+let rsi = Number($("rsi").value);
 
 let trend = $("trend").value;
 let obv = $("obv").value;
@@ -206,12 +214,12 @@ if(obv === "up") D += 15;
 if(obv === "down") D -= 15;
 
 /* =====================
-RSI CONTINUOUS RISK
+RSI RISK
 ===================== */
 let rsiRisk = Math.abs(rsi - 50) / 50;
 
 /* =====================
-EDGE SCORE
+EDGE
 ===================== */
 let edge = D - (rsiRisk * 40);
 edge = Math.max(0, Math.min(100, edge));
@@ -222,13 +230,13 @@ PROBABILITY
 let p = edge / 100;
 
 /* =====================
-RISK / REWARD
+R / R
 ===================== */
 let R = Math.abs(entry - stop);
 let rr = (target - entry) / (entry - stop);
 
 /* =====================
-KELLY SIZING
+KELLY
 ===================== */
 let kelly = p - ((1 - p) / (Math.abs(rr) || 1));
 kelly = Math.max(0, Math.min(0.02, kelly));
@@ -237,7 +245,6 @@ kelly = Math.max(0, Math.min(0.02, kelly));
 POSITION
 ===================== */
 let risk = capital * kelly;
-
 let shares = R ? risk / R : 0;
 
 let pos = shares * entry;
@@ -261,6 +268,7 @@ $("pos").innerText = "$" + pos.toFixed(0);
 $("loss").innerText = "-$" + loss.toFixed(0);
 $("profit").innerText = "+$" + profit.toFixed(0);
 
+}
 }
 </script>
 
