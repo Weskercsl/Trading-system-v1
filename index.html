@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>V8 Trading Engine</title>
+
+<link rel="stylesheet" href="style.css?v=10">
+<link rel="manifest" href="manifest.json">
+
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="card">
+  <div class="label">DECISION</div>
+  <div id="decision" class="value">--</div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <div class="label">POSITION</div>
+    <div id="position" class="value">--</div>
+  </div>
+
+  <div class="card">
+    <div class="label">SHARES</div>
+    <div id="shares" class="value">--</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <div class="label">LOSS</div>
+    <div id="loss" class="value">--</div>
+  </div>
+
+  <div class="card">
+    <div class="label">PROFIT</div>
+    <div id="profit" class="value">--</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="label">R:R</div>
+  <div id="rr" class="value">--</div>
+</div>
+
+<!-- INPUTS -->
+<div class="card">
+  <div class="label">CAPITAL</div>
+  <input type="number" id="capital">
+</div>
+
+<div class="card">
+  <div class="label">RISK %</div>
+  <input type="number" id="riskpct">
+</div>
+
+<div class="card">
+  <div class="label">ENTRY</div>
+  <input type="number" id="entry">
+</div>
+
+<div class="card">
+  <div class="label">STOP</div>
+  <input type="number" id="stop">
+</div>
+
+<div class="card">
+  <div class="label">TAKE PROFIT</div>
+  <input type="number" id="tp">
+</div>
+
+<button onclick="calc()">CALCULATE</button>
+
+</div>
+
+<script>
+function calc(){
+
+  // DOM FIX（关键）
+  const decisionEl = document.getElementById("decision");
+  const positionEl = document.getElementById("position");
+  const sharesEl = document.getElementById("shares");
+  const lossEl = document.getElementById("loss");
+  const profitEl = document.getElementById("profit");
+  const rrEl = document.getElementById("rr");
+
+  // INPUTS
+  let capital = Number(document.getElementById("capital").value || 0);
+  let riskpct = Number(document.getElementById("riskpct").value || 0);
+  let entry = Number(document.getElementById("entry").value || 0);
+  let stop = Number(document.getElementById("stop").value || 0);
+  let tp = Number(document.getElementById("tp").value || 0);
+
+  // SAFETY CHECK（防崩）
+  if(!capital || !entry || !stop){
+    decisionEl.innerText = "INPUT ERROR";
+    return;
+  }
+
+  // ===== V8 CORE =====
+
+  let R = Math.abs(entry - stop);
+  let riskMoney = capital * (riskpct / 100);
+
+  // Q simplified (stable version)
+  let Q = 70;
+
+  if(entry > stop) Q += 10;
+  if(tp > entry) Q += 10;
+
+  Q = Math.max(0, Math.min(100, Q));
+
+  let adjustedRisk = riskMoney * (Q / 100);
+
+  let shares = R ? adjustedRisk / R : 0;
+
+  let position = shares * entry;
+  let loss = shares * R;
+  let profit = shares * (tp - entry);
+
+  let rr = (tp && stop) ? (tp - entry) / (entry - stop) : 0;
+
+  let decision = "AVOID";
+  if(Q > 80) decision = "STRONG TRADE";
+  else if(Q > 65) decision = "TRADE";
+
+  // OUTPUT
+  decisionEl.innerText = decision;
+  positionEl.innerText = "$" + position.toFixed(0);
+  sharesEl.innerText = shares.toFixed(2);
+  lossEl.innerText = "-$" + loss.toFixed(0);
+  profitEl.innerText = "+$" + profit.toFixed(0);
+  rrEl.innerText = rr.toFixed(2);
+}
+</script>
+
+</body>
+</html>
